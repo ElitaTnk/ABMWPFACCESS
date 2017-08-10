@@ -1,0 +1,144 @@
+﻿<Window x:Class="WpfApplication2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication2"
+        mc:Ignorable="d"
+        Title="ABM" Height="450" Width="1024
+        ">
+
+    <Window.Resources>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,2,40,2" />
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="true">
+                            <Border Background="OrangeRed" DockPanel.Dock="right" Margin="5,0,0,0" 
+                                Width="20" Height="20" CornerRadius="5"
+                                ToolTip="{Binding ElementName=customAdorner, 
+                                          Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" 
+                                   FontWeight="Bold" Foreground="white" />
+                            </Border>
+                            <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center" >
+                                <Border BorderBrush="red" BorderThickness="1" />
+                            </AdornedElementPlaceholder>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <ToolBar x:Name="toolBar" VerticalAlignment="Top" Height="47">
+            <Button x:Name="Button_close" ToolTip="Apagar programa" Click="Button_close_Click" VerticalAlignment="Bottom" Height="42" Width="46">
+                <Image x:Name="Close" Source="images/power-off.png" Height="34" Width="40"/>
+            </Button>
+
+            <Button x:Name="Button_cancel" ToolTip="Cancelar edicion" Click="Button_cancel_Click" Width="46" VerticalAlignment="Bottom" Height="42"  Margin="400,0,0,0">
+                <Image x:Name="Cancel" Source="images/cancel-icon.png"/>
+            </Button>
+            <Button x:Name="Button_save" ToolTip="Salvar edicion" Click="Button_save_Click" Width="46" VerticalAlignment="Bottom" Height="42"  Margin="50,0,0,0">
+                <Image x:Name="Save" Source="images/save-icon.png"/>
+            </Button>
+
+            <Button x:Name="Button_remove" ToolTip="Borrar registro" Click="Button_remove_Click" Width="46" VerticalAlignment="Bottom" Height="42"  Margin="250,0,0,0">
+                <Image x:Name="Delete" Source="images/delete-icon.png"/>
+            </Button>
+            <Button x:Name="Button_edit" ToolTip="Editar registro" Click="Button_edit_Click" Width="46" VerticalAlignment="Bottom" Height="42"  Margin="5,0,0,0">
+                <Image x:Name="Edit" Source="images/edit-icon.png"/>
+            </Button>
+            <Button x:Name="Button_add" ToolTip="Agregar registro" Click="Button_add_Click" VerticalAlignment="Bottom" Height="42" Width="46" Margin="0,0,0,0">
+                <Image x:Name="Add" Source="images/add-icon.png"/>
+            </Button>
+        </ToolBar>
+
+        <DataGrid x:Name="dataGridABM" HorizontalAlignment="Left" Margin="517,52,0,0" VerticalAlignment="Top" Height="362" Width="489">
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="Plum"/>
+                    <Setter Property="FontWeight" Value="Semibold"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,2"/>
+                    <Setter Property="BorderBrush" Value="Purple"/>
+                    <Setter Property="Padding" Value="4"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
+        <StackPanel HorizontalAlignment="Left" Height="362" Margin="10,52,0,0" VerticalAlignment="Top" Width="502" Name="formABM">
+            <Grid Name="GridFields" Width="Auto" Height="Auto" Grid.Row="1">
+
+                <Grid.CommandBindings>
+                    <CommandBinding Command="New" CanExecute="saveCanExecute" Executed="saveExecuted" />
+                </Grid.CommandBindings>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="124"/>
+                    <ColumnDefinition Width="Auto" MinWidth="7"/>
+                    <ColumnDefinition Width="331" />
+                    <ColumnDefinition Width="Auto" MinWidth="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Nombre:"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Apellido:"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Fecha de Nacimiento:"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="Género:"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="DNI:"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="Direccion:" Height="26" VerticalAlignment="Top"/>
+                <Label Grid.Row="6" Grid.Column="0" Content="Telefono:"/>
+                <Label Grid.Row="7" Grid.Column="0" Content="E-Mail:"/>
+
+                <TextBox Name="PersonaNombre" Grid.Column="2" Grid.Row="0" Margin="3,11" Validation.Error="validationCheck"
+                        Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Nombre,
+                        ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Height="18"/>
+
+                <TextBox Name="PersonaApellido" Grid.Column="2" Grid.Row="1" Margin="3,11" Validation.Error="validationCheck"
+                    Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Apellido,
+                    ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Height="18"/>
+
+                <DatePicker Grid.Column="2" Grid.Row="2" Margin="3,8" Name="PersonaFechaNac"
+                                        Validation.Error="validationCheck" VerticalAlignment="Center"
+                                        SelectedDate="{Binding Path=FechaNacimiento, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True,
+                                        NotifyOnValidationError=true}" Height="26" />
+
+                <ComboBox FontSize="12" Name="PersonaGenero" Grid.Column="2" Grid.Row="3" Margin="3">
+                    <ComboBoxItem Content="Femenino" Selector.IsSelected="True"/>
+                    <ComboBoxItem Content="Masculino" />
+                </ComboBox>
+
+                <TextBox Name="PersonaDNI" Grid.Column="2" Grid.Row="4" Margin="3,11" Validation.Error="validationCheck"
+                    Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=DNI,
+                    ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Height="18"/>
+
+                <TextBox Name="PersonaDireccion" Grid.Column="2" Grid.Row="5" Margin="3,11" Validation.Error="validationCheck"
+                    Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Direccion,
+                    ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Height="18"/>
+
+                <TextBox Name="PersonaTelefono" Grid.Column="2" Grid.Row="6" Margin="3,11" Validation.Error="validationCheck"
+                    Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Telefono,
+                    ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Height="18"/>
+
+                <TextBox Name="PersonaEmail" Grid.Column="2" Grid.Row="7" Margin="3,11" Validation.Error="validationCheck"
+                    Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Email,
+                    ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Height="18"/>
+            </Grid>
+        </StackPanel>
+
+    </Grid>
+</Window>
